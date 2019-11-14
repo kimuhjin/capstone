@@ -14,26 +14,26 @@ constructor(props){
 componentDidMount()
 {
   axios.get('https://api.thingspeak.com/channels/904460/feeds.json?results=1')
-  .then(response =>{this.setState({feeds : response.data.feeds})
+  .then(response =>{
+    this.setState({feeds : response.data.feeds
+    }),
+    console.log(this.state);
 })
 }
-
 render()
 {
-  console.log(this.state.feeds);
-  console.log("finish");
-
   return (
     <View style ={styles.container}>
       {
         this.state.feeds.map((value) => 
-        <Text key = {value.entry_id}>온도 : {value.field1}      습도 : {value.field2}</Text>)
+        <View key = {value.entry_id}>
+        <Text style ={styles.temp}>온도 : {value.field1}°</Text> 
+        <Text style ={styles.hum}>습도 : {value.field2}%</Text>
+        </View>)
+        
       }
-    </View>
-  )
-
-
-
+   </View>
+    )
 }
 
 }
@@ -42,8 +42,20 @@ export default App;
 const styles = StyleSheet.create({
   container : {
     flex :1,
-    backgroundColor : '#fff',
-    alignItems : 'center',
-    justifyContent : 'center',
+    justifyContent:"center",
+    alignItems : "center"
+
   },
+  temp : {
+    fontSize: 20,
+    alignItems : "center",
+    textAlign : "center",
+    color: "black"
+  },
+  hum : {
+    fontSize: 20,
+    alignItems : "center",
+    textAlign : "center",
+    color: "black"
+  }
 });

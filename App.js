@@ -1,43 +1,63 @@
-import React, {Component} from'react';
+import React from'react';
 import {StyleSheet,Text,View} from 'react-native';
 import axios from 'axios';
+import { LinearGradient } from "expo-linear-gradient";
 
-class App extends Component {
+export default class extends React.Component {
 
 
 constructor(props){
   super(props);
-  this.state = {feeds : [] };
-}
-
-
-componentDidMount()
-{
+  this.state = {
+    feeds : []
+  };
   axios.get('https://api.thingspeak.com/channels/904460/feeds.json?results=1')
   .then(response =>{
-    this.setState({feeds : response.data.feeds
-    }),
-    console.log(this.state);
+    this.setState({feeds : response.data.feeds,
+    })
+  const mappingFunction = p=>p.field3
+    const value1=this.state.feeds.map(mappingFunction)
+    const value2 = value1[0];
+    console.log(value2)
+    if (value2 >50){
+      a = "움직임이 없습니다.";
+    }
+    else 
+    {
+      a = "움직임이 감지 되었습니다.";
+
+    }
+    console.log(a);    
 })
 }
-render()
-{
+
+
+componentDidMount(){
+  
+}
+
+
+render(){
   return (
+
     <View style ={styles.container}>
       {
         this.state.feeds.map((value) => 
         <View key = {value.entry_id}>
-        <Text style ={styles.temp}>온도 : {value.field1}°</Text> 
-        <Text style ={styles.hum}>습도 : {value.field2}%</Text>
+
+        <Text style ={styles.temp}>
+          거리 : {value.field3}
+          </Text>
+
+        <Text style ={styles.hum}>문 열림 체크 : {value.field4}</Text>
         </View>)
-        
       }
    </View>
+  
     )
 }
 
 }
-export default App;
 
 const styles = StyleSheet.create({
   container : {
@@ -59,3 +79,4 @@ const styles = StyleSheet.create({
     color: "black"
   }
 });
+
